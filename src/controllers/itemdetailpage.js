@@ -1212,8 +1212,8 @@ define(["loading", "appRouter", "layoutManager", "connectionManager", "cardBuild
                 const downloadHref = apiClient.getItemDownloadUrl(currentItem.Id);
                 const content = 
                     "#EXTM3U\n" +
-                    "#EXTINF:-1," + currentItem.SortName
-                    + downloadHref;
+                    "#EXTINF:-1," + currentItem.SortName + "\n" +
+                    downloadHref;
 
                 require(['downloadWrapper'], function (w) {
                     const a = document.createElement('a');
