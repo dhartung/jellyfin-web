@@ -327,6 +327,12 @@ define(["loading", "appRouter", "layoutManager", "connectionManager", "cardBuild
             hideAll(page, "btnDownload", true);
         }
 
+        if (item.CanDownload) {
+            hideAll(page, "btnOpen", true);
+        } else {
+            hideAll(page, "btnOpen");
+        }
+
         try {
             require(["focusManager"], function(focusManager) {
                 [".btnResume", ".btnPlay"].every(function (cls) {
@@ -1203,20 +1209,36 @@ define(["loading", "appRouter", "layoutManager", "connectionManager", "cardBuild
             }
 
             function onOpenClick() {
-                console.log(currentItem);
                 const downloadHref = apiClient.getItemDownloadUrl(currentItem.Id);
-                const content = "#EXTM3U\n" + downloadHref;
-                const blob = new Blob([content], {
-                    type: 'text/plain'
-                });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = currentItem.Id + '.m3u';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
+                const content = 
+                    "#EXTM3U\n" +
+                    "#EXTINF:-1," + currentItem.SortName
+                    + downloadHref;
+
+                require(['downloadWrapper'], function (w) {
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = w.url + 
+                        "?name=" + encodeURIComponent(currentItem.SortName) + '.m3u8' +
+                        "&type=" + encodeURIComponent('audio/x-mpequrl') +
+                        "&data=" + btoa(content);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }, function () {
+                    const blob = new Blob([content], {
+                        type: 'audio/x-mpequrl'
+                    });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = encodeURIComponent(currentItem.SortName) + '.m3u8';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })                
             }
 
             function editImages() {
