@@ -1202,6 +1202,23 @@ define(["loading", "appRouter", "layoutManager", "connectionManager", "cardBuild
                 renderTrackSelections(view, self, currentItem), setTrailerButtonVisibility(view, currentItem)
             }
 
+            function onOpenClick() {
+                console.log(currentItem);
+                const downloadHref = apiClient.getItemDownloadUrl(currentItem.Id);
+                const content = "#EXTM3U\n" + downloadHref;
+                const blob = new Blob([content], {
+                    type: 'text/plain'
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = currentItem.Id + '.m3u';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+
             function editImages() {
                 return new Promise(function(resolve, reject) {
                     require(["imageEditor"], function(imageEditor) {
@@ -1232,6 +1249,7 @@ define(["loading", "appRouter", "layoutManager", "connectionManager", "cardBuild
             view.querySelectorAll(".btnPlay");
             bindAll(view, ".btnPlay", "click", onPlayClick);
             bindAll(view, ".btnResume", "click", onPlayClick);
+            bindAll(view, ".btnOpen", "click", onOpenClick)
             bindAll(view, ".btnInstantMix", "click", onInstantMixClick);
             bindAll(view, ".btnShuffle", "click", onShuffleClick);
             bindAll(view, ".btnPlayTrailer", "click", onPlayTrailerClick);
