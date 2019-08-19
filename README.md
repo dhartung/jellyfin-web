@@ -1,3 +1,5 @@
+<b>Modifications: Added button to open files in an external Player (e.g. VLC)</b>
+
 <h1 align="center">Jellyfin Web UI</h1>
 <h3 align="center">The Free Software Media System</h3>
 
