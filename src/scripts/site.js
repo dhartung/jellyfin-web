@@ -713,7 +713,6 @@ var AppInfo = {};
             pluginManager: componentsPath + "/pluginManager",
             packageManager: componentsPath + "/packagemanager"
         };
-        paths.hlsjs = bowerPath + "/hlsjs/dist/hls.min";
         paths.flvjs = "thirdparty/flvjs/flv.min";
         paths.shaka = "thirdparty/shaka/shaka-player.compiled";
         define("chromecastHelper", [componentsPath + "/chromecast/chromecasthelpers"], returnFirstDependency);
@@ -765,6 +764,7 @@ var AppInfo = {};
         define("subtitleEditor", [componentsPath + "/subtitleeditor/subtitleeditor"], returnFirstDependency);
         define("subtitleSync", [componentsPath + "/subtitlesync/subtitlesync"], returnFirstDependency);
         define("itemIdentifier", [componentsPath + "/itemidentifier/itemidentifier"], returnFirstDependency);
+        define("itemMediaInfo", [componentsPath + "/itemMediaInfo/itemMediaInfo"], returnFirstDependency);
         define("mediaInfo", [componentsPath + "/mediainfo/mediainfo"], returnFirstDependency);
         define("itemContextMenu", [componentsPath + "/itemcontextmenu"], returnFirstDependency);
         define("imageEditor", [componentsPath + "/imageeditor/imageeditor"], returnFirstDependency);
@@ -817,12 +817,15 @@ var AppInfo = {};
                     text: "components/require/requiretext"
                 }
             },
+            bundles: {
+                bundle: ["jstree", "hlsjs"]
+            },
             urlArgs: urlArgs,
             paths: paths,
             onError: onRequireJsError
         });
         requirejs.onError = onRequireJsError;
-        define("jstree", ["thirdparty/jstree/jstree", "css!thirdparty/jstree/themes/default/style.css"], returnFirstDependency);
+
         define("dashboardcss", ["css!css/dashboard"], returnFirstDependency);
         define("slideshow", [componentsPath + "/slideshow/slideshow"], returnFirstDependency);
         define("fetch", [bowerPath + "/fetch/fetch"], returnFirstDependency);
